@@ -22,6 +22,7 @@
 %    is_graph_edge/2,
 %    get_adjacent_nodes/3,
 %    graph_reverse_edges/2
+%
 %]).
 
 % make_undirected_unweighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
