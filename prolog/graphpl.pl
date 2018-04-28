@@ -1,28 +1,28 @@
 % graph term form, default
 %  Graph = graph([a,b,c,d,e,f,g,h], [e(a,b), e(b,a), … ]).
 
-%:- module(graphpl, [
-%    make_undirected_unweighted_graph/2,
-%    make_undirected_weighted_graph/2,
-%    make_unweighted_graph/2,
-%    make_weighted_graph/2,
-%    find_path_unweighted/4
-%    find_path_weighted/5,
-%    make_kn/2,
-%    make_kn_from_vertices/2,
-%    cycle_unweighted/3,
-%    cycle_weighted/4,
-%    is_connected/1,
-%    node_degree/3,
-%    node_degree_list/2,
-%    empty_unweighted_graph/3,
-%    empty_weighted_graph/3,
-%    is_graph_node/2,    
-%    is_isolated_node/2,
-%    is_graph_edge/2,
-%    get_adjacent_nodes/3,
-%    graph_reverse_edges/2
-%]).
+:- module(graphpl, [
+    make_undirected_unweighted_graph/2,
+    make_undirected_weighted_graph/2,
+    make_unweighted_graph/2,
+    make_weighted_graph/2,
+    find_path_unweighted/4
+    find_path_weighted/5,
+    make_kn/2,
+    make_kn_from_vertices/2,
+    cycle_unweighted/3,
+    cycle_weighted/4,
+    is_connected/1,
+    node_degree/3,
+    node_degree_list/2,
+    empty_unweighted_graph/3,
+    empty_weighted_graph/3,
+    is_graph_node/2,    
+    is_isolated_node/2,
+    is_graph_edge/2,
+    get_adjacent_nodes/3,
+    graph_reverse_edges/2
+]).
 
 % make_undirected_unweighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
 % also removes duplicates edge(a,b) means also edge(b,a)
