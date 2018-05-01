@@ -9,6 +9,7 @@
 %    find_path_unweighted/4
 %    find_path_weighted/5,
 %    make_kn/2,
+%    make_kn_weighted/4,
 %    make_kn_from_vertices/2,
 %    cycle_unweighted/3,
 %    cycle_weighted/4,
@@ -21,8 +22,9 @@
 %    is_isolated_node/2,
 %    is_graph_edge/2,
 %    get_adjacent_nodes/3,
-%    graph_reverse_edges/2
-%
+%    graph_reverse_edges/2,
+%    spanning_tree/2,
+%    mst_prim/3
 %]).
 
 % make_undirected_unweighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
@@ -155,6 +157,27 @@ find_all_combinations([H|T],CT,CO):-
 find_combinations(_,[],[]):- !.
 find_combinations(E,[H|T],[edge(E,H)|TE]):-
     find_combinations(E,T,TE).
+
+
+% make_kn_weighted(+Size,+MinValue,+MaxValue,-Graph)
+% creates a Kn undirected Graph of size Size with verteces name 1,2,..,N
+% and assign each cost in a range between MinValue and MaxValue
+make_kn_weighted(Size,MinValue,MaxValue,graph(LV,Comb)):-
+    Size1 is Size+1,
+    make_ordered_list(1,Size1,LV),
+    find_all_combinations_weighted(LV,MinValue,MaxValue,[],Comb).
+
+find_all_combinations_weighted([_],_,_,C,C):- !.
+find_all_combinations_weighted([H|T],Min,Max,CT,CO):-
+    find_combinations_weighted(H,T,Min,Max,C),
+    append(CT,C,C1),
+    find_all_combinations_weighted(T,Min,Max,C1,CO).
+
+find_combinations_weighted(_,[],_,_,[]):- !.
+find_combinations_weighted(E,[H|T],Min,Max,[edge(E,H,V)|TE]):-
+    random(Min,Max,V),
+    find_combinations_weighted(E,T,Min,Max,TE).
+
 
 % make_kn_from_vertices(+Vertces,-Graph)
 % creates a Kn Graph of size Size with given verteces name
@@ -318,3 +341,48 @@ reverse_edges_([edge(X,Y,V)|T],[edge(Y,X,V)|T1]):-!,
     reverse_edges_(T,T1).
 reverse_edges_([edge(X,Y)|T],[edge(Y,X)|T1]):-
     reverse_edges_(T,T1).
+
+
+% spanning_trees(+Graph,-SpanningTree)
+spanning_tree(graph([N|T],Edges),graph([N|T],TreeEdges)) :- 
+   generate_spanning_tree(T,Edges,TreeEdgesUnsorted),
+   sort(TreeEdgesUnsorted,TreeEdges).
+
+generate_spanning_tree([],_,[]).
+generate_spanning_tree(Curr,Edges,[Edge|T]) :- 
+    select(Edge,Edges,Edges1), % select an edge and remove Edge from Edges
+    get_vertices(Edge,X,Y), % find vertices adjacent
+    is_connected_to_tree(X,Y,Curr), % check if connected
+    delete(Curr,X,Curr1), % delete the two vertices
+    delete(Curr1,Y,Curr2),
+    generate_spanning_tree(Curr2,Edges1,T).
+
+get_vertices(edge(X,Y),X,Y).
+get_vertices(edge(X,Y,_),X,Y).
+
+is_connected_to_tree(X,Y,Ns):- 
+    memberchk(X,Ns), 
+    \+ memberchk(Y,Ns), !.
+is_connected_to_tree(X,Y,Ns):- 
+    memberchk(Y,Ns), 
+    \+ memberchk(X,Ns).
+
+
+% mst_prim(+Graph,-MST)
+% no choice poits left opened
+mst_prim(graph([H|T],Edges),graph([H|T],TreeEdges),Cost):-
+    predsort(compare_edges_value,Edges,SortedEdges),
+    generate_spanning_tree(T,SortedEdges,TreeEdgesUnsorted),!, % keep it?
+    sort(TreeEdgesUnsorted,TreeEdges),
+    sum_cost(TreeEdges,0,Cost).
+
+compare_edges_value(O,edge(X1,Y1,C1),edge(X2,Y2,C2)):-
+    compare(O,C1+X1+Y1,C2+X2+Y2).
+
+sum_cost([],C,C).
+sum_cost([edge(_,_,C)|T],CT,Tot):-
+    CT1 is CT+C,
+    sum_cost(T,CT1,Tot).
+
+
+% cut(+Graph,-G1,G2) generate a cut
