@@ -385,4 +385,24 @@ sum_cost([edge(_,_,C)|T],CT,Tot):-
     sum_cost(T,CT1,Tot).
 
 
+% merge_graph(+Graph1,+Graph2,-MergedGraph)
+% merges two graphs
+% check if Edges1 and Edges2 have the same structure
+merge_graph(graph(L1,Edges1),graph(L2,Edges2),graph(L,Edges)):-
+    append(L1,L2,LT),
+    sort(LT,L),
+    append(Edges1,Edges2,EdgesT),
+    sort(EdgesT,Edges).
+
 % cut(+Graph,-G1,G2) generate a cut
+% Finds a graph edge given source and target node
+% finds all edges between source node and target node
+% Returns a sorted list of all edges ending in TargetNode
+% Returns the array of node names
+% is acyclic
+% graph modification: remove node, rename node, invert single edge
+% flows algorithms Edmons Karp
+% dual graph
+
+
+% clique
