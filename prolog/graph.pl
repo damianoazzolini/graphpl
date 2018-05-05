@@ -6,7 +6,7 @@
     make_undirected_weighted_graph/2,
     make_unweighted_graph/2,
     make_weighted_graph/2,
-    find_path_unweighted/4
+    find_path_unweighted/4,
     find_path_weighted/5,
     make_kn/2,
     make_kn_weighted/4,
