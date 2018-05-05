@@ -393,3 +393,16 @@ merge_graph(graph(L1,Edges1),graph(L2,Edges2),graph(L,Edges)):-
     sort(LT,L),
     append(Edges1,Edges2,EdgesT),
     sort(EdgesT,Edges).
+
+% cut(+Graph,-G1,G2) generate a cut
+% Finds a graph edge given source and target node
+% finds all edges between source node and target node
+% Returns a sorted list of all edges ending in TargetNode
+% Returns the array of node names
+% is acyclic
+% graph modification: remove node, rename node, invert single edge
+% flows algorithms Edmons Karp
+% dual graph
+
+
+% clique
