@@ -1,7 +1,7 @@
 % graph term form, default
 %  Graph = graph([a,b,c,d,e,f,g,h], [e(a,b), e(b,a), … ]).
 
-:- module(graphpl, [
+:- module(graph, [
     make_undirected_unweighted_graph/2,
     make_undirected_weighted_graph/2,
     make_unweighted_graph/2,
