@@ -1,5 +1,5 @@
 .. graphpl documentation master file, created by
-   sphinx-quickstart on Sun Jun 23 23:30:49 2019.
+   sphinx-quickstart on Sun Jun 23 23:52:51 2019.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 

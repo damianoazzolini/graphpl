@@ -5,7 +5,7 @@
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 SOURCEDIR     = .
-BUILDDIR      = /mnt/c/Users/damia/Desktop/Mio/graphpl/docs
+BUILDDIR      = .
 
 # Put it first so that "make" without argument is like "make help".
 help:
