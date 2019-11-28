@@ -1,5 +1,5 @@
 # graphpl
-Package for SWI prolog to manage graphs. 
+SWI prolog package to manage graphs. 
 
 ### Basic info
 A graph, in this package is represented in this way: `graph(ListOfVertices,ListOfEdges)` where `ListOfVertices` is a list of integer and `ListOfEdges` is a list of predicates `edge/2` or `edge/3` where `edge/2` is used to for unweighted graphs (`edge(NodeA,NodeB)`) and `edge/3` is used for wheighted graphs (`edge(NodeA,NodeB,Cost)`).
