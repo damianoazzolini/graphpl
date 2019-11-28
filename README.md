@@ -5,15 +5,15 @@ SWI prolog package to manage graphs.
 A graph, in this package is represented in this way: `graph(ListOfVertices,ListOfEdges)` where `ListOfVertices` is a list of integer and `ListOfEdges` is a list of predicates `edge/2` or `edge/3` where `edge/2` is used to for unweighted graphs (`edge(NodeA,NodeB)`) and `edge/3` is used for wheighted graphs (`edge(NodeA,NodeB,Cost)`).
 
 ### Available Predicates
-* `make_undirected_unweighted_graph/2`
-* `make_undirected_weighted_graph/2`
-* `make_unweighted_graph/2`
-* `make_weighted_graph/2`
+* `generate_undirected_unweighted_graph/2`
+* `generate_undirected_weighted_graph/2`
+* `generate_unweighted_graph/2`
+* `generate_weighted_graph/2`
 * `find_path_unweighted/4`
 * `find_path_weighted/5`
-* `make_kn/2`
-* `make_kn_weighted/4`
-* `make_kn_from_vertices/2`
+* `generate_kn/2`
+* `generate_kn_weighted/4`
+* `generate_kn_from_vertices/2`
 * `cycle_unweighted/3`
 * `cycle_weighted/4`
 * `is_connected/1`
@@ -34,7 +34,7 @@ A graph, in this package is represented in this way: `graph(ListOfVertices,ListO
     :- use_module(library(graph)).
     
     test(G):-
-	    make_kn(4,G).
+	    generate_kn(4,G).
     
     ?- test(T).
     T = graph([1, 2, 3, 4], [edge(1, 2), edge(1, 3), edge(1, 4), edge(2, 3), edge(2, 4), edge(3, 4)]).
