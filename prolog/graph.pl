@@ -24,11 +24,13 @@
     get_adjacent_nodes/3,
     graph_reverse_edges/2,
     spanning_tree/2,
-    mst_prim/3
+    mst_prim/3,
+    merge_graphs/2
 ]).
 
-% generate_undirected_unweighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
-% also removes duplicates edge(a,b) means also edge(b,a)
+% generate_undirected_unweighted_graph(+ListOfEdges,-Graph) 
+% creates a graph in graph-term form and
+% also removes duplicates
 % undirected and unweighted graph
 generate_undirected_unweighted_graph(ListOfEdges,graph(VSorted,ListOfEdgesSorted)):-
     findall(X,(member(edge(X,_),ListOfEdges)),VX),
@@ -46,8 +48,9 @@ remove_duplicated_edges([edge(X,Y)|T],[edge(X,Y)|TE]):-
     remove_duplicated_edges(T,TE).
 
 
-% generate_undirected_weighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
-% also removes duplicates edge(a,b) means also edge(b,a)
+% generate_undirected_weighted_graph(+ListOfEdges,-Graph) 
+% creates a graph in graph-term form
+% also removes duplicates
 % undirected and weighted graph
 generate_undirected_weighted_graph(ListOfEdges,graph(VSorted,ListOfEdgesSorted)):-
     findall(X,(member(edge(X,_,_),ListOfEdges)),VX),
@@ -65,7 +68,8 @@ remove_duplicated_edges_w([edge(X,Y,V)|T],[edge(X,Y,V)|TE]):-
     remove_duplicated_edges_w(T,TE).
 
 
-% generate_unweighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
+% generate_unweighted_graph(+ListOfEdges,-Graph) 
+% creates a graph in graph-term form
 % directed and unweighted graph
 generate_unweighted_graph(ListOfEdges,graph(VSorted,ListOfEdges)):-
     findall(X,(member(edge(X,_),ListOfEdges)),VX),
@@ -74,7 +78,8 @@ generate_unweighted_graph(ListOfEdges,graph(VSorted,ListOfEdges)):-
     sort(V,VSorted).
 
 
-% generate_weighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
+% generate_weighted_graph(+ListOfEdges,-Graph) 
+% creates a graph in graph-term form
 % directed and weighted graph
 generate_weighted_graph(ListOfEdges,graph(VSorted,ListOfEdges)):-
     findall(X,(member(edge(X,_,_),ListOfEdges)),VX),
@@ -84,7 +89,7 @@ generate_weighted_graph(ListOfEdges,graph(VSorted,ListOfEdges)):-
 
 
 % find_path_unweighted(+Graph,+V1,+V2,-Path)
-% find all path between V1 and V2 in directed unweighted graph
+% find all paths between V1 and V2 in a directed unweighted graph
 find_path_unweighted(graph(Vertices,Edges),V1,V2,Path):-
     member(V1,Vertices),
     member(V2,Vertices),
@@ -112,7 +117,7 @@ connected_w(V1,V2,Edges,C):-
     member(edge(V2,V1,C),Edges).
 
 % find_path_weighted(+Graph,+V1,+V2,-Path,-Cost)
-% find all path between V1 and V2 in a weighted directed graph
+% find all paths between V1 and V2 in a weighted directed graph
 find_path_weighted(graph(Vertices,Edges),V1,V2,Path,Cost):-
     member(V1,Vertices),
     member(V2,Vertices),
@@ -135,8 +140,8 @@ find_path_weighted_(V1,V2,Edges,L,Path,CurrC,TotalC):-
 
 
 % generate_kn(+Size,-Graph)
-% creates a Kn Graph of size Size with verteces name 1,2,..,N
-% only undirected and unweighted graph
+% generates a Kn Graph of size Size with vertices name 1,2,..,N
+% only for undirected and unweighted graph
 generate_kn(Size,graph(LV,Comb)):-
     Size1 is Size+1,
     generate_ordered_list(1,Size1,LV),
@@ -160,8 +165,8 @@ find_combinations(E,[H|T],[edge(E,H)|TE]):-
 
 
 % generate_kn_weighted(+Size,+MinValue,+MaxValue,-Graph)
-% creates a Kn undirected Graph of size Size with verteces name 1,2,..,N
-% and assign each cost in a range between MinValue and MaxValue
+% generates a Kn undirected Graph of size Size with vertices name 1,2,..,N
+% and assign each cost randomly between MinValue and MaxValue
 generate_kn_weighted(Size,MinValue,MaxValue,graph(LV,Comb)):-
     Size1 is Size+1,
     generate_ordered_list(1,Size1,LV),
@@ -179,14 +184,14 @@ find_combinations_weighted(E,[H|T],Min,Max,[edge(E,H,V)|TE]):-
     find_combinations_weighted(E,T,Min,Max,TE).
 
 
-% generate_kn_from_vertices(+Vertces,-Graph)
-% creates a Kn Graph of size Size with given verteces name
+% generate_kn_from_vertices(+Vertices,-Graph)
+% generates a Kn Graph of size Size with given vertices name
 generate_kn_from_vertices(LV,graph(LV,Comb)):-
     find_all_combinations(LV,[],Comb).
 
 
 % cycle_unweighted(+Graph,+Vert,-Cycle)
-% find cycles in unweighted graph
+% find cycles in an unweighted graph
 cycle_unweighted(Graph,V,C):-
     find_path_unweighted(Graph,V,V,C),
     length(C,N),
@@ -194,7 +199,7 @@ cycle_unweighted(Graph,V,C):-
 
 
 % cycle_weighted(+Graph,+Vert,-Cycle)
-% find cycles in weighted graph
+% find cycles in a weighted graph
 cycle_weighted(Graph,V,Cycle,Cost):-
     find_path_weighted(Graph,V,V,Cycle,Cost),
     length(Cycle,N),
@@ -204,7 +209,7 @@ cycle_weighted(Graph,V,Cycle,Cost):-
 % is_connected(+Graph)
 % check if the graph is connected (checks for each vertex if there is a path
 % to each remaining vertex)
-% exist_path 0 for uneighted, 1 for weighted
+% exist_path 0 for unweighted, 1 for weighted
 is_connected(graph(LV,Edges)):-
     (memberchk(edge(_,_),(Edges)) -> 
         exist_path(LV,Edges,0);
@@ -240,12 +245,12 @@ node_degree(graph(LN,Edges),Node,Deg):-
 
 
 % node_degree_list(+Graph,-ListOfVerticesDegreeOrder)
-% retuns a list of list of form [Degree,Edge]
+% returns a list of lists with the form [Degree,Edge]
 node_degree_list(graph(LV,Edges),L):-
     node_degree_list_(LV,LV,Edges,[],L).
 
 node_degree_list_([],_,_,L,Sorted):-
-   sort(0,@>=,L,Sorted). % to keep equal values, msort
+   sort(0,@>=,L,Sorted). % to keep equal values use msort
 node_degree_list_([H|T],LV,Edges,LT,L):-
     node_degree(graph(LV,Edges),H,Deg),
     A = [Deg,H],
@@ -318,7 +323,7 @@ is_graph_edge(graph(_,Edges),E):-
 
 % get_adjacent_nodes returns the adjacent nodes from the given one
 % get_adjacent_nodes(+Graph,+Node,-List).
-% if Node is not ground, returns all not nodes with corresponding list
+% if Node is not ground, returns all nodes with the corresponding list
 get_adjacent_nodes(graph(LN,Edges),Node,List):-
     member(Node,LN),
     (memberchk(edge(_,_),Edges) ->
@@ -351,7 +356,7 @@ spanning_tree(graph([N|T],Edges),graph([N|T],TreeEdges)) :-
 generate_spanning_tree([],_,[]).
 generate_spanning_tree(Curr,Edges,[Edge|T]) :- 
     select(Edge,Edges,Edges1), % select an edge and remove Edge from Edges
-    get_vertices(Edge,X,Y), % find vertices adjacent
+    get_vertices(Edge,X,Y), % find adjacent vertices
     is_connected_to_tree(X,Y,Curr), % check if connected
     delete(Curr,X,Curr1), % delete the two vertices
     delete(Curr1,Y,Curr2),
@@ -369,7 +374,7 @@ is_connected_to_tree(X,Y,Ns):-
 
 
 % mst_prim(+Graph,-MST)
-% no choice poits left opened
+% no choice points left opened
 mst_prim(graph([H|T],Edges),graph([H|T],TreeEdges),Cost):-
     predsort(compare_edges_value,Edges,SortedEdges),
     generate_spanning_tree(T,SortedEdges,TreeEdgesUnsorted),!, % keep it?
@@ -384,11 +389,10 @@ sum_cost([edge(_,_,C)|T],CT,Tot):-
     CT1 is CT+C,
     sum_cost(T,CT1,Tot).
 
-
-% merge_graph(+Graph1,+Graph2,-MergedGraph)
+% merge_graphs(+Graph1,+Graph2,-MergedGraph)
 % merges two graphs
 % check if Edges1 and Edges2 have the same structure
-merge_graph(graph(L1,Edges1),graph(L2,Edges2),graph(L,Edges)):-
+merge_graphs(graph(L1,Edges1),graph(L2,Edges2),graph(L,Edges)):-
     append(L1,L2,LT),
     sort(LT,L),
     append(Edges1,Edges2,EdgesT),
