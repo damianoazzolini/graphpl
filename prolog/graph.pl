@@ -2,15 +2,15 @@
 %  Graph = graph([a,b,c,d,e,f,g,h], [e(a,b), e(b,a), … ]).
 
 :- module(graph, [
-    make_undirected_unweighted_graph/2,
-    make_undirected_weighted_graph/2,
-    make_unweighted_graph/2,
-    make_weighted_graph/2,
+    generate_undirected_unweighted_graph/2,
+    generate_undirected_weighted_graph/2,
+    generate_unweighted_graph/2,
+    generate_weighted_graph/2,
     find_path_unweighted/4,
     find_path_weighted/5,
-    make_kn/2,
-    make_kn_weighted/4,
-    make_kn_from_vertices/2,
+    generate_kn/2,
+    generate_kn_weighted/4,
+    generate_kn_from_vertices/2,
     cycle_unweighted/3,
     cycle_weighted/4,
     is_connected/1,
@@ -27,10 +27,10 @@
     mst_prim/3
 ]).
 
-% make_undirected_unweighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
+% generate_undirected_unweighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
 % also removes duplicates edge(a,b) means also edge(b,a)
 % undirected and unweighted graph
-make_undirected_unweighted_graph(ListOfEdges,graph(VSorted,ListOfEdgesSorted)):-
+generate_undirected_unweighted_graph(ListOfEdges,graph(VSorted,ListOfEdgesSorted)):-
     findall(X,(member(edge(X,_),ListOfEdges)),VX),
     findall(Y,(member(edge(_,Y),ListOfEdges)),VY),
     append(VX,VY,V),
@@ -46,10 +46,10 @@ remove_duplicated_edges([edge(X,Y)|T],[edge(X,Y)|TE]):-
     remove_duplicated_edges(T,TE).
 
 
-% make_undirected_weighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
+% generate_undirected_weighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
 % also removes duplicates edge(a,b) means also edge(b,a)
 % undirected and weighted graph
-make_undirected_weighted_graph(ListOfEdges,graph(VSorted,ListOfEdgesSorted)):-
+generate_undirected_weighted_graph(ListOfEdges,graph(VSorted,ListOfEdgesSorted)):-
     findall(X,(member(edge(X,_,_),ListOfEdges)),VX),
     findall(Y,(member(edge(_,Y,_),ListOfEdges)),VY),
     append(VX,VY,V),
@@ -65,18 +65,18 @@ remove_duplicated_edges_w([edge(X,Y,V)|T],[edge(X,Y,V)|TE]):-
     remove_duplicated_edges_w(T,TE).
 
 
-% make_unweighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
+% generate_unweighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
 % directed and unweighted graph
-make_unweighted_graph(ListOfEdges,graph(VSorted,ListOfEdges)):-
+generate_unweighted_graph(ListOfEdges,graph(VSorted,ListOfEdges)):-
     findall(X,(member(edge(X,_),ListOfEdges)),VX),
     findall(Y,(member(edge(_,Y),ListOfEdges)),VY),
     append(VX,VY,V),
     sort(V,VSorted).
 
 
-% make_weighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
+% generate_weighted_graph(+ListOfEdges,-Graph) creates a graph in graph-term form
 % directed and weighted graph
-make_weighted_graph(ListOfEdges,graph(VSorted,ListOfEdges)):-
+generate_weighted_graph(ListOfEdges,graph(VSorted,ListOfEdges)):-
     findall(X,(member(edge(X,_,_),ListOfEdges)),VX),
     findall(Y,(member(edge(_,Y,_),ListOfEdges)),VY),
     append(VX,VY,V),
@@ -134,19 +134,19 @@ find_path_weighted_(V1,V2,Edges,L,Path,CurrC,TotalC):-
     find_path_weighted_(VX,V2,Edges,L1,Path,Curr1,TotalC).
 
 
-% make_kn(+Size,-Graph)
+% generate_kn(+Size,-Graph)
 % creates a Kn Graph of size Size with verteces name 1,2,..,N
 % only undirected and unweighted graph
-make_kn(Size,graph(LV,Comb)):-
+generate_kn(Size,graph(LV,Comb)):-
     Size1 is Size+1,
-    make_ordered_list(1,Size1,LV),
+    generate_ordered_list(1,Size1,LV),
     find_all_combinations(LV,[],Comb).
 
-make_ordered_list(Max,Max,[]):- !.
-make_ordered_list(I,Max,[I|T]):-
+generate_ordered_list(Max,Max,[]):- !.
+generate_ordered_list(I,Max,[I|T]):-
     I < Max,
     I1 is I+1,
-    make_ordered_list(I1,Max,T).
+    generate_ordered_list(I1,Max,T).
 
 find_all_combinations([_],C,C):- !.
 find_all_combinations([H|T],CT,CO):-
@@ -159,12 +159,12 @@ find_combinations(E,[H|T],[edge(E,H)|TE]):-
     find_combinations(E,T,TE).
 
 
-% make_kn_weighted(+Size,+MinValue,+MaxValue,-Graph)
+% generate_kn_weighted(+Size,+MinValue,+MaxValue,-Graph)
 % creates a Kn undirected Graph of size Size with verteces name 1,2,..,N
 % and assign each cost in a range between MinValue and MaxValue
-make_kn_weighted(Size,MinValue,MaxValue,graph(LV,Comb)):-
+generate_kn_weighted(Size,MinValue,MaxValue,graph(LV,Comb)):-
     Size1 is Size+1,
-    make_ordered_list(1,Size1,LV),
+    generate_ordered_list(1,Size1,LV),
     find_all_combinations_weighted(LV,MinValue,MaxValue,[],Comb).
 
 find_all_combinations_weighted([_],_,_,C,C):- !.
@@ -179,9 +179,9 @@ find_combinations_weighted(E,[H|T],Min,Max,[edge(E,H,V)|TE]):-
     find_combinations_weighted(E,T,Min,Max,TE).
 
 
-% make_kn_from_vertices(+Vertces,-Graph)
+% generate_kn_from_vertices(+Vertces,-Graph)
 % creates a Kn Graph of size Size with given verteces name
-make_kn_from_vertices(LV,graph(LV,Comb)):-
+generate_kn_from_vertices(LV,graph(LV,Comb)):-
     find_all_combinations(LV,[],Comb).
 
 
