@@ -2,7 +2,7 @@
 SWI prolog package to manage graphs. 
 
 ### Basic info
-A graph, in this package is represented in this way: `graph(ListOfVertices,ListOfEdges)` where `ListOfVertices` is a list of integer and `ListOfEdges` is a list of predicates `edge/2` or `edge/3` where `edge/2` is used to for unweighted graphs (`edge(NodeA,NodeB)`) and `edge/3` is used for wheighted graphs (`edge(NodeA,NodeB,Cost)`).
+A graph, in this package is represented in this way: `graph(ListOfVertices,ListOfEdges)` where `ListOfVertices` is a list of integer and `ListOfEdges` is a list of predicates `edge/2` or `edge/3` where `edge/2` is used to for unweighted graphs (`edge(NodeA,NodeB)`) and `edge/3` is used for weighted graphs (`edge(NodeA,NodeB,Cost)`).
 
 ### Available Predicates
 * `generate_undirected_unweighted_graph/2`
@@ -19,8 +19,8 @@ A graph, in this package is represented in this way: `graph(ListOfVertices,ListO
 * `is_connected/1`
 * `node_degree/3`
 * `node_degree_list/2`
-* `empty_unweighted_graph/3`
-* `empty_weighted_graph/3`
+* `generate_empty_unweighted_graph/3`
+* `generate_empty_weighted_graph/3`
 * `is_graph_node/2`
 * `is_isolated_node/2`
 * `is_graph_edge/2`
@@ -40,4 +40,4 @@ A graph, in this package is represented in this way: `graph(ListOfVertices,ListO
     T = graph([1, 2, 3, 4], [edge(1, 2), edge(1, 3), edge(1, 4), edge(2, 3), edge(2, 4), edge(3, 4)]).
     
 ### Contribution
-Feel free to open an issue if you found some problems or pull request if you want to contribute. Feel free also to suggest predicates that could be good to have.
+Feel free to open an issue if you found some problems or pull request if you want to contribute. Feel free also to suggest predicates that should be good to have.
