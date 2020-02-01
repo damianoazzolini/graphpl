@@ -125,15 +125,9 @@ find_path_weighted_(V1,V2,Edges,L,Path,CurrC,TotalC):-
 % generates a Kn Graph of size Size with vertices name 1,2,..,N
 % only for undirected and unweighted graph
 generate_kn(Size,graph(LV,Comb)):-
-    Size1 is Size+1,
-    generate_ordered_list(1,Size1,LV),
+    % Size1 is Size+1,
+    numlist(1,Size,LV),
     find_all_combinations(LV,[],Comb).
-
-generate_ordered_list(Max,Max,[]):- !.
-generate_ordered_list(I,Max,[I|T]):-
-    I < Max,
-    I1 is I+1,
-    generate_ordered_list(I1,Max,T).
 
 find_all_combinations([_],C,C):- !.
 find_all_combinations([H|T],CT,CO):-
