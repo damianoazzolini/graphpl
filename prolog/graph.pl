@@ -16,8 +16,8 @@
     is_connected/1,
     node_degree/3,
     node_degree_list/2,
-    empty_unweighted_graph/3,
-    empty_weighted_graph/3,
+    generate_empty_unweighted_graph/3,
+    generate_empty_weighted_graph/3,
     is_graph_node/2,    
     is_isolated_node/2,
     is_graph_edge/2,
@@ -144,8 +144,7 @@ find_combinations(E,[H|T],[edge(E,H)|TE]):-
 % generates a Kn undirected Graph of size Size with vertices name 1,2,..,N
 % and assign each cost randomly between MinValue and MaxValue
 generate_kn_weighted(Size,MinValue,MaxValue,graph(LV,Comb)):-
-    Size1 is Size+1,
-    generate_ordered_list(1,Size1,LV),
+    numlist(1,Size,LV),
     find_all_combinations_weighted(LV,MinValue,MaxValue,[],Comb).
 
 find_all_combinations_weighted([_],_,_,C,C):- !.
@@ -234,68 +233,51 @@ node_degree_list_([H|T],LV,Edges,LT,L):-
     node_degree_list_(T,LV,Edges,LT1,L).
 
 
-% empty_unweighted_graph(+NumNodes,+NumEdges,-Graph)
+% generate_empty_unweighted_graph(+NumNodes,+NumEdges,-Graph)
 % returns in Graph an empty graph 
-empty_unweighted_graph(NumNodes,NumEdges,graph(LN,Edges)):-
+generate_empty_unweighted_graph(NumNodes,NumEdges,graph(LN,Edges)):-
     NumNodes > 0,
     NumEdges < NumNodes*(NumNodes - 1),
     length(LN,NumNodes),
     length(Edges,NumEdges),
-    create_edges_unweighted(Edges).
+    maplist(=(edge(_,_)),Edges).
 
-create_edges_unweighted([]).
-create_edges_unweighted([edge(_,_)|T]):-
-    create_edges_unweighted(T).
-
-
-% empty_weighted_graph(++NumNodes,++NumEdge,-Graph)
+% generate_empty_weighted_graph(++NumNodes,++NumEdge,-Graph)
 % returns in Graph an empty graph 
-empty_weighted_graph(NumNodes,NumEdges,graph(LN,Edges)):-
+generate_empty_weighted_graph(NumNodes,NumEdges,graph(LN,Edges)):-
     NumNodes > 0,    
     NumEdges < NumNodes*(NumNodes - 1),    
     length(LN,NumNodes),
     length(Edges,NumEdges),
-    create_edges_weighted(Edges).
-
-create_edges_weighted([]).
-create_edges_weighted([edge(_,_,_)|T]):-
-    create_edges_weighted(T).
-
+    maplist(=(edge(_,_,_)),Edges).
 
 % is_graph_node succeeds if a node is in the graph
 % is_graph_node(+Graph,?Node).
 % if Node is not ground, it returns all the nodes in the graph
 is_graph_node(graph(LN,_),N):-
-    (ground(N) ->
-        memberchk(N,LN);
-    member(N,LN)
-    ).
+    member(N,LN).
 
 
 % is_isolated_node succeeds if a node is isolated
 % is_isolated_node(+Graph,?N)
 % returns all isolated nodes in backtracking
 is_isolated_node(graph(LN,Edges),N):-
-    (memberchk(edge(_,_),Edges) ->
-        (member(N,LN),
-        \+member(edge(N,_),Edges),
-        \+member(edge(_,N),Edges))
-        ;
-        (member(N,LN),
-        \+member(edge(N,_,_),Edges),
-        \+member(edge(_,N,_),Edges))
-    ).
+    member(N,LN),
+    my_not_member(N,Edges).
 
+% checks if A is not in list
+my_not_member(_,[]).
+my_not_member(A,[E|Edges]):-
+    (E = edge(NA,NB) ; E = edge(NA,NB,_)),
+	A \= NA,
+    A \= NB,
+    my_not_member(A,Edges).
 
 % is_graph_edge succeeds if a edge is in the graph
 % is_graph_edge(+Graph,?Edge).
 % if Edge is not ground, it returns all the nodes in the graph
 is_graph_edge(graph(_,Edges),E):-
-    (ground(E) ->
-        memberchk(E,Edges);
-    member(E,Edges)
-    ).
-
+    member(E,Edges).
 
 % get_adjacent_nodes returns the adjacent nodes from the given one
 % get_adjacent_nodes(+Graph,+Node,-List).
