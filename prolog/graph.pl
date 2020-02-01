@@ -37,16 +37,7 @@ generate_undirected_unweighted_graph(ListOfEdges,graph(VSorted,ListOfEdgesSorted
     findall(Y,(member(edge(_,Y),ListOfEdges)),VY),
     append(VX,VY,V),
     sort(V,VSorted),
-    remove_duplicated_edges(ListOfEdges,ListOfEdgesNoDup),
     sort(ListOfEdgesNoDup,ListOfEdgesSorted).
-
-remove_duplicated_edges([],[]).
-remove_duplicated_edges([edge(X,Y)|T],L):-
-    member(edge(Y,X),T),!,
-    remove_duplicated_edges(T,L).
-remove_duplicated_edges([edge(X,Y)|T],[edge(X,Y)|TE]):-
-    remove_duplicated_edges(T,TE).
-
 
 % generate_undirected_weighted_graph(+ListOfEdges,-Graph) 
 % creates a graph in graph-term form
@@ -57,16 +48,7 @@ generate_undirected_weighted_graph(ListOfEdges,graph(VSorted,ListOfEdgesSorted))
     findall(Y,(member(edge(_,Y,_),ListOfEdges)),VY),
     append(VX,VY,V),
     sort(V,VSorted),
-    remove_duplicated_edges_w(ListOfEdges,ListOfEdgesNoDup),
-    sort(ListOfEdgesNoDup,ListOfEdgesSorted).
-
-remove_duplicated_edges_w([],[]).
-remove_duplicated_edges_w([edge(X,Y,V)|T],L):-
-    member(edge(Y,X,V),T),!,
-    remove_duplicated_edges_w(T,L).
-remove_duplicated_edges_w([edge(X,Y,V)|T],[edge(X,Y,V)|TE]):-
-    remove_duplicated_edges_w(T,TE).
-
+    sort(ListOfEdges,ListOfEdgesSorted).
 
 % generate_unweighted_graph(+ListOfEdges,-Graph) 
 % creates a graph in graph-term form
