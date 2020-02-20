@@ -25,7 +25,7 @@
     graph_reverse_edges/2,
     spanning_tree/2,
     mst_prim/3,
-    merge_graphs/2
+    merge_graphs/3
 ]).
 
 % generate_undirected_unweighted_graph(+ListOfEdges,-Graph) 
@@ -37,7 +37,7 @@ generate_undirected_unweighted_graph(ListOfEdges,graph(VSorted,ListOfEdgesSorted
     findall(Y,(member(edge(_,Y),ListOfEdges)),VY),
     append(VX,VY,V),
     sort(V,VSorted),
-    sort(ListOfEdgesNoDup,ListOfEdgesSorted).
+    sort(ListOfEdges,ListOfEdgesSorted).
 
 % generate_undirected_weighted_graph(+ListOfEdges,-Graph) 
 % creates a graph in graph-term form
